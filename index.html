@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kevin Zhao — Biostatistician</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --navy:    #080e1f;
+      --navy2:   #0d1530;
+      --navy3:   #111d3f;
+      --teal:    #00cfaa;
+      --teal2:   #00a888;
+      --teal-dim:#00cfaa22;
+      --white:   #f0f4ff;
+      --muted:   #8898bb;
+      --border:  #1c2c56;
+      --card:    #0d1835;
+      --ff-head: 'Playfair Display', Georgia, serif;
+      --ff-mono: 'DM Mono', 'Courier New', monospace;
+      --ff-body: 'DM Sans', sans-serif;
+    }
+
+    /* ─── RESET ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--ff-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: var(--teal); text-decoration: none; transition: opacity .2s; }
+    a:hover { opacity: .75; }
+    ::selection { background: var(--teal); color: var(--navy); }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 2px; }
+
+    /* ─── NOISE OVERLAY ──────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: .6;
+    }
+
+    /* ─── DOT GRID BACKGROUND ────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: radial-gradient(circle, #1c2c5688 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(to bottom, #080e1fee, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s, background .3s;
+    }
+    nav.scrolled {
+      border-color: var(--border);
+      background: #080e1ff5;
+    }
+    .nav-logo {
+      font-family: var(--ff-head);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      color: var(--white);
+    }
+    .nav-logo span { color: var(--teal); }
+    .nav-links {
+      display: flex; gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--ff-mono);
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color .2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--teal); }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 3rem 6rem;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, #00cfaa18 0%, transparent 70%);
+      top: -100px; right: -200px;
+      pointer-events: none;
+      animation: pulse 6s ease-in-out infinite alternate;
+    }
+    .hero-glow2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #1a3a8f18 0%, transparent 70%);
+      bottom: -50px; left: -100px;
+      pointer-events: none;
+      animation: pulse 8s ease-in-out infinite alternate-reverse;
+    }
+    @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
+    .hero-inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .hero-eyebrow {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp .8s .2s forwards;
+    }
+    .hero-name {
+      font-family: var(--ff-head);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp .8s .35s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--teal);
+    }
+    .hero-title {
+      font-family: var(--ff-mono);
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .8s .5s forwards;
+    }
+    .hero-title span {
+      color: var(--white);
+      font-weight: 500;
+    }
+    .hero-summary {
+      max-width: 580px;
+      font-size: 1.05rem;
+      color: #b0bfd8;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp .8s .65s forwards;
+    }
+    .hero-ctas {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp .8s .8s forwards;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .75rem 1.8rem;
+      font-family: var(--ff-mono);
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      transition: all .25s;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: var(--navy);
+      font-weight: 500;
+    }
+    .btn-primary:hover { background: var(--teal2); opacity: 1; transform: translateY(-2px); box-shadow: 0 8px 24px #00cfaa33; }
+    .btn-outline {
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-outline:hover { border-color: var(--teal); color: var(--teal); opacity: 1; transform: translateY(-2px); }
+
+    .hero-stats {
+      display: flex; gap: 3rem; margin-top: 5rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp .8s 1s forwards;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: var(--ff-head);
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: .4rem;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION COMMONS ────────────────────────────────── */
+    section {
+      position: relative; z-index: 1;
+      padding: 7rem 3rem;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .8rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: var(--border);
+    }
+    .section-title {
+      font-family: var(--ff-head);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 3.5rem;
+      line-height: 1.15;
+    }
+
+    /* ─── REVEAL ANIMATION ───────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s, transform .7s;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ─── EXPERIENCE TIMELINE ────────────────────────────── */
+    #experience { background: var(--navy); }
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 8px; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--teal), var(--border), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 3.5rem;
+      padding-left: 2rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.4rem; top: 8px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 12px var(--teal);
+    }
+    .timeline-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: .5rem;
+      margin-bottom: .6rem;
+    }
+    .timeline-company {
+      font-family: var(--ff-head);
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+    .timeline-location {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+    }
+    .timeline-role {
+      font-family: var(--ff-mono);
+      font-size: .8rem;
+      color: var(--teal);
+      letter-spacing: .06em;
+      margin-bottom: .3rem;
+    }
+    .timeline-dates {
+      font-family: var(--ff-mono);
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-bottom: .9rem;
+    }
+    .timeline-body {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.4rem 1.6rem;
+      transition: border-color .3s;
+    }
+    .timeline-body:hover { border-color: var(--teal-dim); }
+    .timeline-body ul {
+      list-style: none;
+      display: flex; flex-direction: column; gap: .55rem;
+    }
+    .timeline-body li {
+      font-size: .9rem;
+      color: #9db0cc;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.6;
+    }
+    .timeline-body li::before {
+      content: '›';
+      position: absolute; left: 0;
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    /* ─── EDUCATION ──────────────────────────────────────── */
+    #education { background: var(--navy2); }
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.5rem;
+    }
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .edu-card:hover {
+      border-color: var(--teal);
+      transform: translateY(-4px);
+    }
+    .edu-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--teal), transparent);
+    }
+    .edu-degree {
+      font-family: var(--ff-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: .3rem;
+    }
+    .edu-school {
+      font-family: var(--ff-mono);
+      font-size: .8rem;
+      color: var(--teal);
+      letter-spacing: .06em;
+      margin-bottom: .3rem;
+    }
+    .edu-meta {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+    }
+    .edu-flag {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      font-size: 1.4rem;
+    }
+
+    /* ─── SKILLS ─────────────────────────────────────────── */
+    #skills { background: var(--navy); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+    .skill-group { }
+    .skill-group-label {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-tags {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+    }
+    .tag {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      padding: .35rem .8rem;
+      border-radius: 3px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: #9db0cc;
+      transition: all .2s;
+      cursor: default;
+    }
+    .tag:hover {
+      background: var(--teal-dim);
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    /* ─── PUBLICATIONS ───────────────────────────────────── */
+    #publications { background: var(--navy2); }
+    .pub-list {
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .pub-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem 1.8rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      transition: border-color .3s, transform .3s;
+    }
+    .pub-item:hover {
+      border-color: var(--teal);
+      transform: translateX(4px);
+    }
+    .pub-num {
+      font-family: var(--ff-head);
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--teal-dim);
+      color: #00cfaa33;
+      min-width: 2rem;
+      line-height: 1;
+      user-select: none;
+    }
+    .pub-content { flex: 1; }
+    .pub-title {
+      font-family: var(--ff-body);
+      font-weight: 500;
+      font-size: .95rem;
+      color: var(--white);
+      line-height: 1.5;
+      margin-bottom: .4rem;
+    }
+    .pub-meta {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+    .pub-badge {
+      display: inline-block;
+      padding: .2rem .6rem;
+      font-family: var(--ff-mono);
+      font-size: .6rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      background: var(--teal-dim);
+      color: var(--teal);
+      border: 1px solid #00cfaa44;
+      margin-left: .5rem;
+      vertical-align: middle;
+    }
+
+    /* ─── CONFERENCES ────────────────────────────────────── */
+    #conferences { background: var(--navy); }
+    .conf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.2rem;
+    }
+    .conf-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      transition: border-color .3s;
+    }
+    .conf-card:hover { border-color: var(--teal); }
+    .conf-year {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      letter-spacing: .12em;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .conf-title {
+      font-size: .9rem;
+      color: var(--white);
+      line-height: 1.55;
+      margin-bottom: .5rem;
+    }
+    .conf-venue {
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      color: var(--muted);
+    }
+
+    /* ─── AWARDS ─────────────────────────────────────────── */
+    #awards { background: var(--navy2); }
+    .awards-list {
+      display: flex; flex-direction: column; gap: .8rem;
+    }
+    .award-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: border-color .3s;
+    }
+    .award-item:hover { border-color: var(--teal); }
+    .award-name {
+      font-size: .9rem;
+      color: var(--white);
+      display: flex; align-items: center; gap: .8rem;
+    }
+    .award-name::before {
+      content: '★';
+      color: var(--teal);
+      font-size: .75rem;
+    }
+    .award-year {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────── */
+    footer {
+      position: relative; z-index: 1;
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      padding: 3rem;
+      text-align: center;
+    }
+    .footer-name {
+      font-family: var(--ff-head);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+    .footer-tagline {
+      font-family: var(--ff-mono);
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .footer-copy {
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      color: var(--border);
+      letter-spacing: .08em;
+    }
+
+    /* ─── BACK TO TOP ────────────────────────────────────── */
+    #back-top {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      z-index: 200;
+      width: 44px; height: 44px;
+      border-radius: 4px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0; pointer-events: none;
+      transition: all .3s;
+    }
+    #back-top.visible {
+      opacity: 1; pointer-events: auto;
+    }
+    #back-top:hover {
+      background: var(--teal);
+      color: var(--navy);
+      transform: translateY(-3px);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 5rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+      .timeline { padding-left: 1rem; }
+      .timeline-item { padding-left: 1.5rem; }
+      footer { padding: 2rem 1.5rem; }
+    }
+
+    /* ─── ANIMATED COUNTER ───────────────────────────────── */
+    .counter { display: inline-block; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo">K.<span>Zhao</span></div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#awards">Awards</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">// Biostatistician · Oncology · Bayesian Methods</p>
+    <h1 class="hero-name">Kevin<br /><em>Zhao</em></h1>
+    <p class="hero-title">
+      <span>Associate Director, Biostatistics</span> — Moderna, Inc.
+    </p>
+    <p class="hero-summary">
+      Seasoned biostatistician with 5+ years of industry experience in oncology clinical trials.
+      Specializing in Bayesian inference, adaptive trial designs, and dose optimization across
+      Phase I–III oncology programs.
+    </p>
+    <div class="hero-ctas">
+      <a href="#experience" class="btn btn-primary">View Experience ↓</a>
+      <a href="#publications" class="btn btn-outline">Publications</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="5">0</span>+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="7">0</span></div>
+        <div class="stat-label">Publications</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="4">0</span></div>
+        <div class="stat-label">Conference Talks</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="3">0</span></div>
+        <div class="stat-label">Companies</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EXPERIENCE ─────────────────────────────────────────── -->
+<section id="experience">
+  <div class="container">
+    <p class="section-label">Work Experience</p>
+    <h2 class="section-title">Career Timeline</h2>
+
+    <div class="timeline">
+
+      <!-- Moderna -->
+      <div class="timeline-item reveal">
+        <div class="timeline-header">
+          <div class="timeline-company">Moderna, Inc.</div>
+          <div class="timeline-location">Remote</div>
+        </div>
+        <div class="timeline-role">Associate Director, Biostatistics</div>
+        <div class="timeline-dates">07/2024 — Present</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Support IND filing of multiple programs as lead biostatistician</li>
+            <li>Represent biostatistics in cross-functional collaboration on clinical trial design and conduct</li>
+            <li>Advocate and implement the Backfill (BF) BOIN design; oversee the 5-parameter BLRM model</li>
+            <li>Run simulations to determine sample size, develop GO/NoGo rules and evaluate trial design performance</li>
+            <li>Collaborate with programming team to analyze data and deliver tables, figures, and listings</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Gilead -->
+      <div class="timeline-item reveal">
+        <div class="timeline-header">
+          <div class="timeline-company">Gilead Sciences</div>
+          <div class="timeline-location">Foster City, CA / Remote</div>
+        </div>
+        <div class="timeline-role">Manager, Biostatistics</div>
+        <div class="timeline-dates">06/2022 — Present</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Lead biostatistics efforts on bio-equivalence study and Phase II study on 1L mTNBC</li>
+            <li>Internal biostatistics point-of-contact for investigator-initiated Phase III study on early-stage HER2+ breast cancer</li>
+            <li>Biostatistics support on Phase III study design for early-stage TNBC</li>
+            <li>Addressed JNDA RtQ regarding sensitivity analysis on an efficacy endpoint</li>
+            <li>Co-lead biostatistician for Integrated Summary of Safety (ISS) and Immunogenicity (ISI) for multiple sBLA filings</li>
+            <li>Reviewed dose optimization literature; co-authored internal white paper and implementation tool</li>
+            <li>Reviewed Bayesian historical data borrowing case studies</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Nektar -->
+      <div class="timeline-item reveal">
+        <div class="timeline-header">
+          <div class="timeline-company">Nektar Therapeutics</div>
+          <div class="timeline-location">San Francisco, CA</div>
+        </div>
+        <div class="timeline-role">Principal Biostatistician (01/2022–06/2022) · Senior Biostatistician (02/2019–12/2021)</div>
+        <div class="timeline-dates">02/2019 — 06/2022</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Lead biostatistician for multiple Phase I/II clinical trials in solid tumors and blood cancers</li>
+            <li>Developed SAPs including sample size calculations and early-stopping rules; led cross-functional discussions</li>
+            <li>Led statistical analyses for DMC meetings and public presentations</li>
+            <li>Supported CSR for Phase II study as unblinded biostatistician</li>
+            <li>Wrote R functions to facilitate independent QC of statistical analysis results</li>
+            <li>Implemented Bayesian Logistic Regression model for Maximum Tolerated Dose (MTD) finding</li>
+            <li>Developed novel Bayesian model to borrow from historical real-world data (RWD), balancing bias and variance</li>
+            <li>Lead biostatistician for annual IB/DSUR report updates</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Takeda -->
+      <div class="timeline-item reveal">
+        <div class="timeline-header">
+          <div class="timeline-company">Takeda Pharmaceuticals</div>
+          <div class="timeline-location">Cambridge, MA</div>
+        </div>
+        <div class="timeline-role">Biostatistics Summer Intern</div>
+        <div class="timeline-dates">05/2017 — 08/2017</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Developed optimal 2-stage adaptive design for Phase III clinical trials, reducing sample size and duration</li>
+            <li>Developed an R Shiny app to facilitate understanding and implementation of optimal group sequential clinical trial designs</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Genocea -->
+      <div class="timeline-item reveal">
+        <div class="timeline-header">
+          <div class="timeline-company">Genocea Biosciences</div>
+          <div class="timeline-location">Cambridge, MA</div>
+        </div>
+        <div class="timeline-role">Biostatistics Summer Intern</div>
+        <div class="timeline-dates">05/2016 — 08/2016</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Wrote R script to simulate survival data with recurrences and censoring</li>
+            <li>Developed a novel rank test method for recurrent event data analysis</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Boston University Research -->
+      <div class="timeline-item reveal">
+        <div class="timeline-header">
+          <div class="timeline-company">Boston University</div>
+          <div class="timeline-location">Boston, MA</div>
+        </div>
+        <div class="timeline-role">Research Assistant</div>
+        <div class="timeline-dates">08/2014 — 01/2019</div>
+        <div class="timeline-body">
+          <ul>
+            <li>Developed SAS/R programs to produce integrated analyses, figures, and tables</li>
+            <li>Derived biological age from clinical/inflammatory biomarkers; investigated associations with cardiovascular diseases</li>
+            <li>Conducted meta-analysis of Genome-wide Association Studies (GWAS)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ──────────────────────────────────────────── -->
+<section id="education">
+  <div class="container">
+    <p class="section-label">Academic Background</p>
+    <h2 class="section-title">Education</h2>
+    <div class="edu-grid">
+
+      <div class="edu-card reveal">
+        <div class="edu-flag">🎓</div>
+        <div class="edu-degree">Doctor of Philosophy<br />in Biostatistics</div>
+        <div class="edu-school">Boston University</div>
+        <div class="edu-meta">Boston, MA &nbsp;·&nbsp; 09/2014 – 01/2019</div>
+      </div>
+
+      <div class="edu-card reveal">
+        <div class="edu-flag">📐</div>
+        <div class="edu-degree">Master of Science<br />in Biostatistics / Chemistry</div>
+        <div class="edu-school">University of Illinois at Chicago</div>
+        <div class="edu-meta">Chicago, IL &nbsp;·&nbsp; 09/2010 – 05/2014</div>
+      </div>
+
+      <div class="edu-card reveal">
+        <div class="edu-flag">⚗️</div>
+        <div class="edu-degree">Bachelor of Science<br />in Chemistry</div>
+        <div class="edu-school">Peking University</div>
+        <div class="edu-meta">Beijing, China &nbsp;·&nbsp; 08/2006 – 07/2010</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILLS ─────────────────────────────────────────────── -->
+<section id="skills">
+  <div class="container">
+    <p class="section-label">Technical Expertise</p>
+    <h2 class="section-title">Skills &amp; Tools</h2>
+    <div class="skills-grid">
+
+      <div class="skill-group reveal">
+        <div class="skill-group-label">Programming Languages</div>
+        <div class="skill-tags">
+          <span class="tag">SAS</span>
+          <span class="tag">SAS Macro</span>
+          <span class="tag">R</span>
+          <span class="tag">R Shiny</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Python</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-label">Clinical Trial Software</div>
+        <div class="skill-tags">
+          <span class="tag">East</span>
+          <span class="tag">WinBUGS</span>
+          <span class="tag">BOIN Design</span>
+          <span class="tag">BLRM Model</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-label">Statistical Methods</div>
+        <div class="skill-tags">
+          <span class="tag">Bayesian Inference</span>
+          <span class="tag">Adaptive Design</span>
+          <span class="tag">Dose Optimization</span>
+          <span class="tag">Survival Analysis</span>
+          <span class="tag">Meta-Analysis</span>
+          <span class="tag">GWAS</span>
+        </div>
+      </div>
+
+      <div class="skill-group reveal">
+        <div class="skill-group-label">AI / Machine Learning</div>
+        <div class="skill-tags">
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Deep Learning</span>
+          <span class="tag">Historical Data Borrowing</span>
+          <span class="tag">RWD Analysis</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PUBLICATIONS ───────────────────────────────────────── -->
+<section id="publications">
+  <div class="container">
+    <p class="section-label">Research Output</p>
+    <h2 class="section-title">Publications</h2>
+    <div class="pub-list">
+
+      <div class="pub-item reveal">
+        <div class="pub-num">01</div>
+        <div class="pub-content">
+          <div class="pub-title">Teng, Z., <strong>Zhao, Q.</strong>, Liu, Y., Tang, S. "Optimal Futility Stopping Rules for Group Sequential Design" <span class="pub-badge">In Preparation</span></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-num">02</div>
+        <div class="pub-content">
+          <div class="pub-title"><strong>Zhao, Q.</strong>, Ma, H. "Modified Robust Meta-Analytic-Predictive Priors for Incorporating Historical Controls in Clinical Trials"</div>
+          <div class="pub-meta">Statistics in Biopharmaceutical Research, 2023, 1–7</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-num">03</div>
+        <div class="pub-content">
+          <div class="pub-title"><strong>Zhao Q.</strong>, Zhang B., LaValley M.P., Massaro J.M., Lunetta K.L., Chang M. "Extended Rank Tests for Analyzing Recurrent Event Data"</div>
+          <div class="pub-meta">Statistics in Biopharmaceutical Research, 2019 Jun 24:1–9</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-num">04</div>
+        <div class="pub-content">
+          <div class="pub-title">Lin, H., Lunetta, K.L., <strong>Zhao, Q.</strong>, et al. "Whole blood gene expression associated with clinical biological age"</div>
+          <div class="pub-meta">Journal of Gerontology: Medical Sciences, 2018, 74(1), 81–88</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-num">05</div>
+        <div class="pub-content">
+          <div class="pub-title">Murabito, J.M., Rong, J., Lunetta, K.L., Huan, T., Lin, H., <strong>Zhao, Q.</strong>, et al. "Cross-sectional relations of whole-blood miRNA expression levels and hand grip strength in a community sample"</div>
+          <div class="pub-meta">Aging Cell, 2017, 16:888–894</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-num">06</div>
+        <div class="pub-content">
+          <div class="pub-title">Lin, H., Lunetta, K.L., <strong>Zhao, Q.</strong>, et al. "Transcriptome-wide association study of inflammatory biologic age"</div>
+          <div class="pub-meta">Aging (Albany NY), 2017, 9:2288–2301</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-num">07</div>
+        <div class="pub-content">
+          <div class="pub-title">Murabito, J.M., <strong>Zhao, Q.</strong>, et al. "Measures of biologic age in a community sample predict mortality and age-related disease: the Framingham Offspring Study"</div>
+          <div class="pub-meta">Journal of Gerontology, 2017, 73(6), 757–762</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CONFERENCES ────────────────────────────────────────── -->
+<section id="conferences">
+  <div class="container">
+    <p class="section-label">Scientific Engagement</p>
+    <h2 class="section-title">Conference Presentations</h2>
+    <div class="conf-grid">
+
+      <div class="conf-card reveal">
+        <div class="conf-year">JSM 2018 · Vancouver, Canada</div>
+        <div class="conf-title">"Extended Rank Tests for Survival Data with Recurrences"</div>
+        <div class="conf-venue">Joint Statistical Meetings</div>
+      </div>
+
+      <div class="conf-card reveal">
+        <div class="conf-year">ICSA 2020 · Houston, USA</div>
+        <div class="conf-title">"Optimal Futility Stopping for Group Sequential Design"</div>
+        <div class="conf-venue">ICSA Applied Statistical Symposium</div>
+      </div>
+
+      <div class="conf-card reveal">
+        <div class="conf-year">ESMO-IO 2021</div>
+        <div class="conf-title">"Interim results from the NSCLC dose-expansion cohort of the Phase 1/2 PROPEL trial of bempegaldesleukin plus pembrolizumab"</div>
+        <div class="conf-venue">ESMO Immuno-Oncology Congress</div>
+      </div>
+
+      <div class="conf-card reveal">
+        <div class="conf-year">Blood 2021</div>
+        <div class="conf-title">"Safety, Tolerability, PK/PD and Preliminary Efficacy of NKTR-255, a Novel IL-15 Receptor Agonist, in Patients with Relapsed/Refractory Hematologic Malignancies"</div>
+        <div class="conf-venue">Blood 138 (2021): 3134</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── AWARDS ─────────────────────────────────────────────── -->
+<section id="awards">
+  <div class="container">
+    <p class="section-label">Recognition</p>
+    <h2 class="section-title">Awards &amp; Certificates</h2>
+    <div class="awards-list">
+
+      <div class="award-item reveal">
+        <div class="award-name">Deep Learning Certificate (Coursera)</div>
+        <div class="award-year">2022</div>
+      </div>
+      <div class="award-item reveal">
+        <div class="award-name">Student Paper Competition Award</div>
+        <div class="award-year">Jan 2018</div>
+      </div>
+      <div class="award-item reveal">
+        <div class="award-name">Machine Learning Certificate</div>
+        <div class="award-year">Oct 2016</div>
+      </div>
+      <div class="award-item reveal">
+        <div class="award-name">Board of Trustee Tuition Waiver Award</div>
+        <div class="award-year">Jan 2013</div>
+      </div>
+      <div class="award-item reveal">
+        <div class="award-name">SAS Advanced Programming Certificate</div>
+        <div class="award-year">Nov 2012</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-name">Kevin <em style="font-style:italic; color:var(--teal);">Zhao</em></div>
+  <div class="footer-tagline">Associate Director of Biostatistics · Oncology · Bayesian Methods</div>
+  <div class="footer-copy">© 2025 Kevin Zhao · Built from CV data</div>
+</footer>
+
+<!-- ── BACK TO TOP ─────────────────────────────────────────── -->
+<button id="back-top" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ── SCRIPTS ────────────────────────────────────────────── -->
+<script>
+  /* ─── Navbar scroll state ─── */
+  const navbar = document.getElementById('navbar');
+  const backTop = document.getElementById('back-top');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  /* ─── Active nav link ─── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+
+  /* ─── Reveal on scroll ─── */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i % 4) * 0.1 + 's';
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  /* ─── Animated counters ─── */
+  function animateCounter(el, target, duration = 1200) {
+    let start = null;
+    const step = ts => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      el.textContent = Math.floor(progress * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+  }
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const counters = e.target.querySelectorAll('.counter');
+        counters.forEach(c => animateCounter(c, +c.dataset.target));
+        counterObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  const heroStats = document.querySelector('.hero-stats');
+  if (heroStats) counterObs.observe(heroStats);
+</script>
+
+</body>
+</html>
